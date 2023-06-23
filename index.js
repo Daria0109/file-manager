@@ -1,12 +1,12 @@
+import * as readline from 'node:readline';
+import { stdin as input, stdout as output } from 'node:process';
 import os from 'os';
 
-const readableStream = process.stdin;
+const rl = readline.createInterface({ input, output })
 
 const getUsername = () => {
 	const usernameArgument = process.argv.find((arg) => arg.startsWith('--username'));
-	const username = usernameArgument.split('=')[1];
-
-	return username;
+	return usernameArgument.split('=')[1];
 }
 
 const welcome = () => {
@@ -14,7 +14,7 @@ const welcome = () => {
 }
 
 const exit = () => {
-	process.stdout.write(`Thank you for using File Manager, ${getUsername()}, goodbye!`);
+	process.stdout.write(`Thank you for using File Manager, ${getUsername()}, goodbye!\n`);
 	process.exit(0);
 }
 
@@ -23,16 +23,18 @@ const launchApp = async () => {
 
 	process.stdout.write(`You are currently in ${os.homedir()}\n`)
 
-	readableStream.on('data',  (chunk) => {
-		if (chunk.toString().trim() === '.exit') {
-			exit();
+	rl.prompt();
+
+	rl.on('line', (input) => {
+		if (input === '.exit') {
+			return exit();
 		}
-		const data = chunk.toString();
-		console.log(typeof chunk.toString());
+
+		rl.prompt();
 	});
 
-	process.on('SIGINT', () => {
-		exit();
+	rl.on('close', () => {
+		return exit();
 	});
 
 }
