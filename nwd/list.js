@@ -7,7 +7,7 @@ export const list = () => {
 		const directories = [];
 		const files = [];
 
-		data.map((item) => {
+		data.sort().forEach((item) => {
 			const stats = statSync(join(process.cwd(), item));
 			if (stats.isFile()) {
 				files.push({ Name: item, Type: 'file' });

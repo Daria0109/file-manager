@@ -6,6 +6,12 @@ import fs from 'fs';
 import { change } from './nwd/change.js';
 import { list } from './nwd/list.js';
 import { getCurrent } from './nwd/getCurrent.js';
+import { print } from './fs/print.js';
+import { addFile } from './fs/addFile.js';
+import { renameFile } from './fs/renameFile.js';
+import { copyFile } from './fs/copyFile.js';
+import { move } from './fs/move.js';
+import { remove } from './fs/remove.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -33,7 +39,8 @@ const launchApp = async () => {
 	rl.on('line', (input) => {
 		const inputSegments = input.split(' ');
 		const command = inputSegments[0];
-		const pathToFile = inputSegments[1];
+		// const part = inputSegments.slice(1);
+		const pathToFile = inputSegments.slice(1);
 
 		switch (command) {
 			case '.exit':
@@ -46,11 +53,35 @@ const launchApp = async () => {
 				rl.prompt();
 				break;
 			case 'cd':
-				change(pathToFile);
+				change(...pathToFile);
 				rl.prompt();
 				break;
 			case 'ls':
 				list();
+				rl.prompt();
+				break;
+			case 'cat':
+				print(...pathToFile);
+				rl.prompt();
+				break;
+			case 'add':
+				addFile(...pathToFile);
+				rl.prompt();
+				break;
+			case 'rn':
+				renameFile(...pathToFile);
+				rl.prompt();
+				break;
+			case 'cp':
+				copyFile(...pathToFile);
+				rl.prompt();
+				break;
+			case 'mv':
+				move(...pathToFile);
+				rl.prompt();
+				break;
+			case 'rm':
+				remove(...pathToFile);
 				rl.prompt();
 				break;
 			default:
