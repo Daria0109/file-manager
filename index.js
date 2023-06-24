@@ -12,6 +12,8 @@ import { renameFile } from './fs/renameFile.js';
 import { copyFile } from './fs/copyFile.js';
 import { move } from './fs/move.js';
 import { remove } from './fs/remove.js';
+import { operationSystem } from './os/operationSystem.js';
+import { calculateHash } from './hash/calculateHash.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -82,6 +84,14 @@ const launchApp = async () => {
 				break;
 			case 'rm':
 				remove(...pathToFile);
+				rl.prompt();
+				break;
+			case 'os':
+				operationSystem(...pathToFile);
+				rl.prompt();
+				break;
+			case 'hash':
+				calculateHash(...pathToFile);
 				rl.prompt();
 				break;
 			default:
