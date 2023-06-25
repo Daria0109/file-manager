@@ -1,22 +1,24 @@
-import { readdir, statSync } from 'fs';
-import { join } from 'path';
+import { readdir } from 'fs';
 import { getCurrent } from './getCurrent.js';
 
 export const list = () => {
-	readdir(process.cwd(), (err, data) => {
+	readdir(process.cwd(), { withFileTypes: true }, (err, data) => {
 		const directories = [];
 		const files = [];
 
-		data.sort().forEach((item) => {
-			const stats = statSync(join(process.cwd(), item));
-			if (stats.isFile()) {
-				files.push({ Name: item, Type: 'file' });
-			} else if (stats.isDirectory()) {
-				directories.push({ Name: item, Type: 'directory' });
+		data.forEach((item) => {
+			if (item.isFile()) {
+				files.push({ Name: item.name, Type: 'file' });
+			} else if (item.isDirectory()) {
+				directories.push({ Name: item.name, Type: 'directory' });
 			}
 		});
+
+		const sortedDirectories = directories.sort((a, b) => a.Name - b.Name);
+		const sortedFiles = files.sort((a, b) => a.Name - b.Name);
+
 		console.log(process.cwd());
-		console.table([...directories, ...files]);
+		console.table([...sortedDirectories, ...sortedFiles]);
 		getCurrent();
 	});
-}
+};

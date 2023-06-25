@@ -2,10 +2,8 @@ import * as readline from 'node:readline';
 import { stdin as input, stdout as output } from 'node:process';
 import os from 'os';
 import path from 'path';
-import fs from 'fs';
 import { change } from './nwd/change.js';
 import { list } from './nwd/list.js';
-import { getCurrent } from './nwd/getCurrent.js';
 import { print } from './fs/print.js';
 import { addFile } from './fs/addFile.js';
 import { renameFile } from './fs/renameFile.js';
@@ -14,6 +12,9 @@ import { move } from './fs/move.js';
 import { remove } from './fs/remove.js';
 import { operationSystem } from './os/operationSystem.js';
 import { calculateHash } from './hash/calculateHash.js';
+import { compress } from './zip/compress.js';
+import { decompress } from './zip/decompress.js';
+import { goUp } from './nwd/goUp.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -41,17 +42,14 @@ const launchApp = async () => {
 	rl.on('line', (input) => {
 		const inputSegments = input.split(' ');
 		const command = inputSegments[0];
-		// const part = inputSegments.slice(1);
+
 		const pathToFile = inputSegments.slice(1);
 
 		switch (command) {
 			case '.exit':
 				return exit();
 			case 'up':
-				const { base } = path.parse(process.cwd());
-				if (base) {
-					change('..');
-				}
+				goUp();
 				rl.prompt();
 				break;
 			case 'cd':
@@ -92,6 +90,14 @@ const launchApp = async () => {
 				break;
 			case 'hash':
 				calculateHash(...pathToFile);
+				rl.prompt();
+				break;
+			case 'compress':
+				compress(...pathToFile);
+				rl.prompt();
+				break;
+			case 'decompress':
+				decompress(...pathToFile);
 				rl.prompt();
 				break;
 			default:
