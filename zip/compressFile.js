@@ -1,13 +1,14 @@
-import { resolve, parse } from 'path';
+import { resolve, basename } from 'path';
 import { createReadStream, createWriteStream } from 'fs';
-import { stat } from 'fs/promises';
 import { pipeline } from 'stream/promises';
-import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
+import { createBrotliCompress } from 'zlib';
 import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
-import { getCurrentPath } from '../nwd/getCurrentPath.js';
+import { stat } from 'fs/promises';
+import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
 import { getErrorMessage } from '../init/getErrorMessage.js';
+import { getCurrentPath } from '../nwd/getCurrentPath.js';
 
-export const copyFile = async (paths) => {
+export const compressFile = async (paths) => {
 	try {
 		const { pathToFile, destinationPath } = retrieveFilePaths(paths);
 
@@ -15,17 +16,17 @@ export const copyFile = async (paths) => {
 		const directoryStats = await stat(destinationPath);
 
 		if (fileStats.isFile() && directoryStats.isDirectory()) {
-			const fileName = parse(pathToFile).base;
-			const pathToDirectory = resolve(process.cwd(), destinationPath, fileName);
+			const fileName = basename(pathToFile);
+			const pathToDestination = resolve(destinationPath, `${fileName}.br`);
 
 			const readStream = createReadStream(pathToFile);
-			const writeStream = createWriteStream(pathToDirectory, { flags: 'wx' });
+			const writeStream = createWriteStream(pathToDestination);
 
 			await pipeline(
 				readStream,
+				createBrotliCompress(),
 				writeStream
 			);
-
 			getCurrentPath();
 		} else {
 			throw new Error(INVALID_INPUT_ERROR);
@@ -33,4 +34,4 @@ export const copyFile = async (paths) => {
 	} catch (err) {
 		throw new Error(getErrorMessage(err.message));
 	}
-};
+}

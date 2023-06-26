@@ -1,18 +1,21 @@
-import { resolve } from 'path';
-import { rename } from 'fs';
-import { getCurrent } from '../nwd/getCurrent.js';
+import { resolve, extname } from 'path';
+import { rename } from 'fs/promises';
+import { getCurrentPath } from '../nwd/getCurrentPath.js';
+import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
+import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
+import { getErrorMessage } from '../init/getErrorMessage.js';
 
-export const renameFile = (file, newFile) => {
-	// const [file, newFile] = files.split(' ');
+export const renameFile = async (paths) => {
+	try {
+		const { pathToFile, destinationPath } = retrieveFilePaths(paths);
 
-	const pathToFile = resolve(process.cwd(), file);
-	const pathToNewFile = resolve(process.cwd(), newFile);
-
-	rename(pathToFile, pathToNewFile, (err) => {
-		if (err) {
-			console.log('Operation failed');
-		} else {
-			getCurrent();
+		if (!extname(pathToFile) || !extname(destinationPath)) {
+			throw new Error(INVALID_INPUT_ERROR);
 		}
-	});
-}
+
+		await rename(pathToFile, destinationPath);
+		getCurrentPath();
+	} catch (err) {
+		throw new Error(getErrorMessage(err.message));
+	}
+};

@@ -1,13 +1,13 @@
-import { resolve, parse } from 'path';
+import { parse, resolve } from 'path';
 import { createReadStream, createWriteStream } from 'fs';
-import { stat } from 'fs/promises';
 import { pipeline } from 'stream/promises';
-import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
 import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
+import { stat, unlink } from 'fs/promises';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
+import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
 import { getErrorMessage } from '../init/getErrorMessage.js';
 
-export const copyFile = async (paths) => {
+export const moveFile = async (paths) => {
 	try {
 		const { pathToFile, destinationPath } = retrieveFilePaths(paths);
 
@@ -26,6 +26,7 @@ export const copyFile = async (paths) => {
 				writeStream
 			);
 
+			await unlink(pathToFile);
 			getCurrentPath();
 		} else {
 			throw new Error(INVALID_INPUT_ERROR);
