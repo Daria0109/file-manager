@@ -2,7 +2,7 @@ import { unlink, stat } from 'fs/promises';
 import { resolve } from 'path';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
 import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
-import { getErrorMessage } from '../init/getErrorMessage.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 
 export const removeFile = async (fileName) => {
 	try {

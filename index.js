@@ -1,4 +1,4 @@
-import * as readline from 'node:readline';
+import * as readline from 'readline';
 import { stdin as input, stdout as output } from 'node:process';
 import os from 'os';
 import { changePath } from './nwd/changePath.js';
@@ -43,10 +43,11 @@ const launchApp = async () => {
 	rl.prompt();
 
 	rl.on('line', async (input) => {
-		const inputSegments = input.trim().split(' ');
-		const command = inputSegments[0];
+		const inputSegments = input.split(' ');
+		const filteredSegments = inputSegments.filter((item) => Boolean(item));
+		const command = filteredSegments[0];
 
-		const pathToFile = inputSegments.slice(1).join(' ').trim();
+		const pathToFile = filteredSegments.slice(1).join(' ');
 
 		const actions = {
 			[EXIT_PROCESS]: exitProcess,

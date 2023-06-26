@@ -3,9 +3,9 @@ import { createReadStream, createWriteStream } from 'fs';
 import { stat } from 'fs/promises';
 import { pipeline } from 'stream/promises';
 import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
-import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
+import { retrieveFilePaths } from '../utils/helpers/retrieveFilePaths.js';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
-import { getErrorMessage } from '../init/getErrorMessage.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 
 export const copyFile = async (paths) => {
 	try {

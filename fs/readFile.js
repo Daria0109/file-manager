@@ -3,7 +3,8 @@ import { access } from 'fs/promises';
 import { stat } from 'fs/promises';
 import { resolve } from 'path';
 import * as readline from 'readline';
-import { INVALID_INPUT_ERROR, OPERATION_FAILED_ERROR } from '../utils/constants/messages.js';
+import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 
 export const readFile = async (pathName) => {
 	try {
@@ -35,7 +36,6 @@ export const readFile = async (pathName) => {
 			});
 		}
 	} catch (err) {
-		throw new Error(OPERATION_FAILED_ERROR);
+		throw new Error(getErrorMessage(err.message));
 	}
-
 }

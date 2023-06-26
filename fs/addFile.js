@@ -1,7 +1,8 @@
 import { appendFile } from 'fs/promises';
 import { resolve, extname } from 'path';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
-import { INVALID_INPUT_ERROR, OPERATION_FAILED_ERROR } from '../utils/constants/messages.js';
+import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 
 export const addFile = async (fileName) => {
 	try {
@@ -12,9 +13,9 @@ export const addFile = async (fileName) => {
 			await appendFile(pathToFile, '', { flag: 'wx' });
 			getCurrentPath();
 		} else {
-			console.log(INVALID_INPUT_ERROR);
+			throw new Error(INVALID_INPUT_ERROR);
 		}
 	} catch (err) {
-		throw new Error(OPERATION_FAILED_ERROR);
+		throw new Error(getErrorMessage(err.message));
 	}
 }

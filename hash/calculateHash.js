@@ -1,6 +1,6 @@
 import { readFile, stat } from 'fs/promises';
 import { resolve } from 'path';
-import { getErrorMessage } from '../init/getErrorMessage.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
 
 const { createHash } = await import('node:crypto');

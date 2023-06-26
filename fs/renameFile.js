@@ -1,9 +1,9 @@
-import { resolve, extname } from 'path';
+import { extname } from 'path';
 import { rename } from 'fs/promises';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
 import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
-import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
-import { getErrorMessage } from '../init/getErrorMessage.js';
+import { retrieveFilePaths } from '../utils/helpers/retrieveFilePaths.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 
 export const renameFile = async (paths) => {
 	try {

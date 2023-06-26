@@ -1,9 +1,11 @@
-import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
+import { INVALID_INPUT_ERROR } from '../constants/messages.js';
 import { resolve } from 'path';
 
 export const retrieveFilePaths = (paths) => {
 	const segments = paths.split(' ');
-	if (segments.length !== 2) {
+	const filteredSegments = segments.filter((item) => Boolean(item));
+
+	if (filteredSegments.length !== 2) {
 		throw new Error(INVALID_INPUT_ERROR);
 	}
 

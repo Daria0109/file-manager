@@ -2,10 +2,10 @@ import { resolve, basename } from 'path';
 import { createReadStream, createWriteStream } from 'fs';
 import { pipeline } from 'stream/promises';
 import { createBrotliCompress } from 'zlib';
-import { retrieveFilePaths } from '../init/retrieveFilePaths.js';
+import { retrieveFilePaths } from '../utils/helpers/retrieveFilePaths.js';
 import { stat } from 'fs/promises';
 import { INVALID_INPUT_ERROR } from '../utils/constants/messages.js';
-import { getErrorMessage } from '../init/getErrorMessage.js';
+import { getErrorMessage } from '../utils/helpers/getErrorMessage.js';
 import { getCurrentPath } from '../nwd/getCurrentPath.js';
 
 export const compressFile = async (paths) => {
